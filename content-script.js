@@ -275,8 +275,10 @@ const countriesMap = {
   Greece: 'Греция',
   Russia: 'Россия',
   Austria: 'Австрия',
+  Australia: 'Австралия',
   Sweden: 'Швеция',
   International: 'Интернациональная',
+  Argentina: 'Аргентина',
   'United States': 'Соединённые Штаты Америки',
 }
 const genresMap = {
