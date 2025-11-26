@@ -151,13 +151,18 @@ async function handleBandDataRequest(request, sendResponse) {
   // Парсим новые данные
   const data = parser.parseBandData();
   group = data
+  const genres = await getGenres()
+  const groupGenres = group.genre.split('/').map(g => {
+    return genresMap[g] || genres.find(genre => genre.name === g)
+  })
+  group.genres = groupGenres
   const response = await fetch('https://metal-archives.ru/api/group', {
     headers: {
       "Content-Type": "application/json",
       Authorization: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZmIxNzNlNmNiM2FkNjhjODg3YmQ0ZCIsInVzZXJuYW1lIjoiU2Nyb25oZWltIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzYyODc4ODk2LCJleHAiOjE3NjU0NzA4OTZ9.bAH7ADIjT9zzBf_yhKQoh37z9Q0x0OwBe6N0xrbkp1Q'
     },
     method: 'POST',
-    body: JSON.stringify(data)
+    body: JSON.stringify(group)
   })
 
   group = { ...group, ...await response.json() }
@@ -198,6 +203,7 @@ async function handleAlbumDataRequest(request, sendResponse) {
   albums = albumData
   albums.forEach(async (album) => {
     album.groups = [group._id]
+    album.genres = group.genres
     await fetch('https://metal-archives.ru/api/album', {
       headers: {
         "Content-Type": "application/json",
@@ -208,14 +214,6 @@ async function handleAlbumDataRequest(request, sendResponse) {
     })
   })
 
-
-  const genres = await getGenres()
-  const groupGenres = group.genre.split('/').map(g => {
-    return genresMap[g] || genres.find(genre => genre.name === g)
-  })
-  group.genres = groupGenres
-  delete group.genre
-  delete group.albums
   console.log('group', group, 'albums', albums);
   // Сохраняем в кэш
   await chrome.storage.local.set({
