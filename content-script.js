@@ -279,6 +279,8 @@ const countriesMap = {
   Sweden: 'Швеция',
   International: 'Интернациональная',
   Argentina: 'Аргентина',
+  'South Africa': 'Южно-Африканская Республика',
+  'United Kingdom': 'Соединённое Королевство',
   'United States': 'Соединённые Штаты Америки',
 }
 const genresMap = {
