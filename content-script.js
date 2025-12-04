@@ -34,6 +34,7 @@ class MetalArchivesParser {
       // Парсинг альбомов
       let albumRows = document.querySelectorAll("#ui-tabs-3 > table > tbody > tr")
       if (!albumRows.length) albumRows = document.querySelectorAll("#ui-tabs-4 > table > tbody > tr")
+      if (!albumRows.length) albumRows = document.querySelectorAll("#ui-tabs-5 > table > tbody > tr")
       data.albums = Array.from(albumRows).map(row => {
         const cells = row.querySelectorAll('td');
         const albumLink = cells[0]?.querySelector('a');
@@ -81,7 +82,7 @@ class MetalArchivesParser {
             number: parseInt(cells[0]?.innerText?.trim()) || 1,
             title: cells[1]?.innerText.trim() || '',
             discNumber: 1,
-            duration: `00:${cells[2]?.innerText?.trim()}` || '00:00:01',
+            duration: cells[2]?.innerText?.trim() ? `00:${cells[2]?.innerText?.trim()}` : '00:00:01',
             lyrics: ''
           });
         }
@@ -154,7 +155,8 @@ async function handleBandDataRequest(request, sendResponse) {
   const genres = await getGenres()
   const groupGenres = group.genre.split('/').map(g => {
     return genresMap[g] || genres.find(genre => genre.name === g)
-  })
+  }).filter(Boolean)
+
   group.genres = groupGenres
   const response = await fetch('https://metal-archives.ru/api/group', {
     headers: {
@@ -278,6 +280,7 @@ const countriesMap = {
   International: 'Интернациональная',
   Argentina: 'Аргентина',
   France: 'Франция',
+  Poland: 'Польша',
   'South Africa': 'Южно-Африканская Республика',
   'United Kingdom': 'Соединённое Королевство',
   'United States': 'Соединённые Штаты Америки',
