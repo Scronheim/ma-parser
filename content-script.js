@@ -294,6 +294,7 @@ const genresMap = {
   Thrash: '69135799268c1ed45e97f0e0',
   Groove: '69135f42268c1ed45e97f0e3',
   Progressive: '6915c472c1b8b0e45cf43ebc',
+  Folk: '693ae0f7e77157ddc4adc395',
   'Melodic Death': '68ef8d6439489319bc90fe0f',
   'Funeral Doom': '6915a9dac1b8b0e45cf43eb9',
   'Melodic Doom': '693a56667d4682a5506c7a10',
